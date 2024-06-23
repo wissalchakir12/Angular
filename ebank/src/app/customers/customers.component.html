@@ -1,0 +1,53 @@
+<div class="container mt-2">
+  <!-- Handle the asynchronous customers data -->
+  <ng-container *ngIf="customers | async as listCustomers; else failureOrLoading">
+    <div class="card">
+      <div class="card-header">Customers</div>
+      <div class="card-body">
+        <div *ngIf="searchFormGroup">
+          <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
+            <div class="input-group">
+              <label class="input-group-text">Keyword:</label>
+              <input type="text" formControlName="keyword" class="form-control">
+              <button class="btn btn-info">Search</button>
+            </div>
+          </form>
+        </div>
+        <!-- Search form -->
+
+        <!-- Customers table -->
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Display each customer in a row -->
+          <tr *ngFor="let c of listCustomers">
+            <td>{{c.id}}</td>
+            <td>{{c.name}}</td>
+            <td>{{c.email}}</td>
+            <td>
+              <button (click)="handleDeleteCustomer(c)" class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+  <!-- Error or loading message -->
+  <ng-template #failureOrLoading>
+    <ng-container *ngIf="errormessage; else loading">
+      <div class="text-bg-danger">
+        {{errormessage}}
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      Loading............
+    </ng-template>
+  </ng-template>
+</div>
